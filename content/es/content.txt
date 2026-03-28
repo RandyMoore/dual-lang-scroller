@@ -1,4 +1,4 @@
-Este es el contenido de muestra en español para la aplicación de desplazamiento bilingüe.
+Titulo Español
 
 Muestra cómo el contenido de texto plano debe estructurarse sin ningún formato HTML o markdown.
 

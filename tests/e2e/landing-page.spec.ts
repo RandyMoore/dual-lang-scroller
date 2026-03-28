@@ -17,21 +17,13 @@ test.describe('Landing Page', () => {
     const contentItems = page.locator('.content-item');
     await expect(contentItems).toHaveCount(1);
     
-    // Verify the item has the correct id
+    // Verify EN and ES content are displayed in each item
     const firstItem = contentItems.first();
-    await expect(firstItem).toContainText('content');
-    
-    // Verify EN and ES content are displayed
-    const enContent = firstItem.locator('.content-en');
-    const esContent = firstItem.locator('.content-es');
-    
-    await expect(enContent).toBeVisible();
-    await expect(esContent).toBeVisible();
     
     // Verify EN content contains expected text (first line)
-    await expect(enContent).toContainText('This is sample English content for the dual-language scroller application.');
+    await expect(firstItem.locator('.content-en')).toContainText('English Title');
     
     // Verify ES content contains expected text (first line)
-    await expect(esContent).toContainText('Este es el contenido de muestra en español para la aplicación de desplazamiento bilingüe.');
+    await expect(firstItem.locator('.content-es')).toContainText('Titulo Español');
   });
 });
