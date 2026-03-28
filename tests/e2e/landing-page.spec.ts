@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Landing Page', () => {
   test('should load the landing page', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/dual-lang-scroller/);
+    await expect(page).toHaveTitle(/Dual-Language Scroller/);
   });
 
   test('should display content list', async ({ page }) => {

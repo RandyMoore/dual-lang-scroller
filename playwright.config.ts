@@ -9,12 +9,13 @@ export default defineConfig({
   // Use 'list' reporter for terminal output (no browser popup)
   // Change to 'html' if you want a browser-based report
   reporter: 'list',
+  timeout: 1000, // Global test execution timeout per test
   webServer: {
     command: 'npm run dev',
     url: 'http://localhost:5173',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120000,
-    stdout: 'pipe',
+    reuseExistingServer: false,
+    timeout: 2000,
+    stdout: 'ignore', // Ignore server output during tests to reduce noise
     stderr: 'pipe',
   },
   use: {

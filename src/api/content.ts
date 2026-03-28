@@ -22,7 +22,7 @@ export function createContentAPI() {
   console.log('Content files:', { en: readFileSync(enPath, 'utf-8'), es: readFileSync(esPath, 'utf-8') })
   
   return {
-    handler: (req: any, res: any) => {
+    handler: (req: any, res: any, next: () => void) => {
       if (req.url === '/api/content' && req.method === 'GET') {
         try {
           const enContent = readFileSync(enPath, 'utf-8')
@@ -41,8 +41,7 @@ export function createContentAPI() {
           res.end(JSON.stringify({ error: 'Failed to read content files' }))
         }
       } else {
-        res.writeHead(404)
-        res.end('Not Found')
+        next()
       }
     }
   }
