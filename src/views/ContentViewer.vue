@@ -1,12 +1,8 @@
 <template>
   <div class="content-viewer">
     <div class="frame-container">
-      <div class="frame" ref="frame1">
-        <div class="frame-content">{{ contentA }}</div>
-      </div>
-      <div class="frame" ref="frame2">
-        <div class="frame-content">{{ contentB }}</div>
-      </div>
+      <LanguageFrame :content="contentA" language="English" ref="frame1" />
+      <LanguageFrame :content="contentB" language="Spanish" ref="frame2" />
     </div>
   </div>
 </template>
@@ -14,12 +10,13 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
+import LanguageFrame from '../components/LanguageFrame.vue'
 
 const route = useRoute()
 const contentA = ref('')
 const contentB = ref('')
-const frame1 = ref<HTMLElement | null>(null)
-const frame2 = ref<HTMLElement | null>(null)
+const frame1 = ref<InstanceType<typeof LanguageFrame> | null>(null)
+const frame2 = ref<InstanceType<typeof LanguageFrame> | null>(null)
 let scrollTimeout: number | null = null
 
 onMounted(async () => {
@@ -37,6 +34,12 @@ onMounted(async () => {
   }
 })
 
+// Update URL to use backend route
+const updateUrl = () => {
+  const contentId = route.params.id as string
+  window.history.replaceState({}, '', `/content/${contentId}`)
+}
+
 onUnmounted(() => {
   if (scrollTimeout) {
     clearTimeout(scrollTimeout)
@@ -46,19 +49,28 @@ onUnmounted(() => {
 const setupScrollSync = () => {
   if (!frame1.value || !frame2.value) return
 
-  const syncScroll = (sourceFrame: HTMLElement, targetFrame: HTMLElement) => {
+  const syncScroll = (sourceFrame: InstanceType<typeof LanguageFrame>, targetFrame: InstanceType<typeof LanguageFrame>) => {
     if (scrollTimeout) {
       clearTimeout(scrollTimeout)
     }
 
     scrollTimeout = window.setTimeout(() => {
-      targetFrame.scrollTop = sourceFrame.scrollTop
-      targetFrame.scrollLeft = sourceFrame.scrollLeft
+      const sourceElement = sourceFrame.$el
+      const targetElement = targetFrame.$el
+      if (sourceElement && targetElement) {
+        targetElement.scrollTop = sourceElement.scrollTop
+        targetElement.scrollLeft = sourceElement.scrollLeft
+      }
     }, 0)
   }
 
-  frame1.value.addEventListener('scroll', () => syncScroll(frame1.value!, frame2.value!))
-  frame2.value.addEventListener('scroll', () => syncScroll(frame2.value!, frame1.value!))
+  const sourceElement1 = frame1.value.$el
+  const sourceElement2 = frame2.value.$el
+  
+  if (sourceElement1 && sourceElement2) {
+    sourceElement1.addEventListener('scroll', () => syncScroll(frame1.value!, frame2.value!))
+    sourceElement2.addEventListener('scroll', () => syncScroll(frame2.value!, frame1.value!))
+  }
 }
 </script>
 

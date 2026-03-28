@@ -1,28 +1,18 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-.venv/
-venv/
-ENV/
-env/
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Testing
+coverage
+
+# Production
+dist
+dist-ssr
+
+# Misc
+.DS_Store
+*.local
 
 # Node.js
 node_modules/
@@ -33,13 +23,15 @@ pnpm-debug.log*
 dist/
 dist-ssr/
 *.local
+package-lock.json
 
 # Testing
 .coverage
 coverage/
 *.cover
 .hypothesis/
-.pytest_cache/
+playwright-report/
+test-results/
 
 # IDE
 .vscode/

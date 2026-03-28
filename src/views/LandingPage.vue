@@ -8,8 +8,8 @@
         class="content-item"
         @click="navigateToViewer(item.id)"
       >
-        <h2>{{ item.title }}</h2>
-        <p>{{ item.description }}</p>
+        <h2>{{ item.title.en || item.title.es || 'Untitled' }}</h2>
+        <p>{{ item.description || 'Select to view content' }}</p>
       </div>
     </div>
   </div>
@@ -20,7 +20,12 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const contentItems = ref<Array<{ id: string; title: string; description: string }>>([])
+const contentItems = ref<Array<{
+  id: string
+  title: { en: string; es: string }
+  description?: string
+  metadata?: any
+}>>([])
 
 onMounted(async () => {
   try {

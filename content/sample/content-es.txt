@@ -1,0 +1,7 @@
+Este es el contenido de muestra en español para la aplicación de desplazamiento bilingüe.
+
+Muestra cómo el contenido de texto plano debe estructurarse sin ningún formato HTML o markdown.
+
+El texto debe ser legible y correctamente formateado con párrafos separados por saltos de línea.
+
+Este contenido se mostrará en el marco superior del visor de contenido.
