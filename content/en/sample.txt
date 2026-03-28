@@ -1,0 +1,19 @@
+This is a sample English text for the dual-language scroller application.
+
+The application allows users to read content side by side in two different languages.
+
+This text demonstrates how the scrolling synchronization works between the two frames.
+
+Each paragraph should align vertically when scrolling, providing a seamless reading experience.
+
+The text is plain and unstyled, as specified in the requirements.
+
+Users can navigate between different content items using the landing page.
+
+The viewer displays two frames stacked vertically, one for each language.
+
+Scrolling behavior is synchronized so that both frames move together.
+
+No scroll bars are visible, but the functionality is preserved.
+
+The application is optimized for mobile devices and touch interactions.
