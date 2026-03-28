@@ -1,4 +1,4 @@
-# Dual-Language Scroller - Project Structure
+ # Dual-Language Scroller - Project Structure
 
 ## Overview
 This document defines the recommended file and folder structure for the dual-language scroller project, following industry best practices for Python and Vue.js development.
@@ -316,6 +316,27 @@ dual-lang-scroller/
 - Document setup instructions in README
 - Use semantic versioning for releases
 - No CI/CD pipeline required - all testing is local
+
+### AI-Assisted Development
+- Review all LLM-generated code for correctness
+- Use beads to structure complex multi-step tasks
+- Document LLM-generated decisions in code comments
+- Test all generated code before merging
+
+## LLM-Assisted Development Tools
+
+### Configuration Files
+- `.llm-config.json`: Local LLM configuration
+- `beads/beads.config.yaml`: Task orchestration
+
+### Quick Commands
+```bash
+# Run planning workflow
+beads run --workflow planning
+
+# Generate beads from specification
+beads generate --from Specification.md
+```
 
 ## Summary
 

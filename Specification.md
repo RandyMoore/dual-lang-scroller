@@ -111,3 +111,11 @@ Content items should contain:
 - Content files are plain text with UTF-8 encoding
 - Scroll synchronization works correctly
 - Content can be easily added, removed, and organized
+
+## Testing Acceptance Criteria
+For each feature, validation should confirm:
+1. ✓ Functionality matches specification
+2. ✓ Code generated/reviewed with GLM-4.7-Flash
+3. ✓ Unit tests pass (pytest/Vitest)
+4. ✓ Visual tests pass (Selenium/Playwright)
+5. ✓ Cross-browser compatibility verified

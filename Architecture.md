@@ -243,6 +243,32 @@ This document proposes a technology stack for the dual-language scroller project
 **Risk**: No CI/CD pipeline
 **Mitigation**: All testing is performed locally in development environment
 
+## Development Workflow with Local LLM
+
+### Bead-Based Development
+- Use beads to structure sequential development tasks
+- LLM generates task descriptions and implementation guides
+- Each bead represents an atomic unit of work
+- Beads can be run independently or orchestrated as workflows
+
+### Prompt Engineering
+- Store reusable prompts in `/prompts/` directory
+- Template prompts with project context
+- Version control prompt iterations
+- Review LLM-generated code before implementation
+
+### AI-Assisted Development
+- **Local Model Considerations**:
+  - Weaker local models require enhanced context for planning
+  - Provide detailed examples and references in prompts
+  - Use clear, structured output formats
+  - Avoid complex nested structures
+  - Include code snippets and file paths for reference
+  - Offline development capability
+  - No API rate limits
+  - Direct integration with beads framework
+  - Privacy: all code stays local during AI operations
+
 ## Conclusion
 
 This technology stack provides an optimal balance of simplicity, popularity, and testing support for the dual-language scroller project. The chosen technologies are well-suited for personal use, easy to learn, and provide strong foundations for testing and future expansion. All testing is performed locally in the development environment.
