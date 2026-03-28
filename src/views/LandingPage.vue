@@ -1,15 +1,13 @@
 <template>
   <div class="landing-page">
-    <h1>Dual-Language Scroller</h1>
     <div class="content-list">
       <div
         v-for="item in contentItems"
         :key="item.id"
         class="content-item"
-        @click="navigateToViewer(item.id)"
       >
-        <h2>{{ item.title.en || item.title.es || 'Untitled' }}</h2>
-        <p>{{ item.description || 'Select to view content' }}</p>
+        <div class="content-en">{{ item.en }}</div>
+        <div class="content-es">{{ item.es }}</div>
       </div>
     </div>
   </div>
@@ -22,9 +20,8 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const contentItems = ref<Array<{
   id: string
-  title: { en: string; es: string }
-  description?: string
-  metadata?: any
+  en: string
+  es: string
 }>>([])
 
 onMounted(async () => {
@@ -48,11 +45,6 @@ const navigateToViewer = (id: string) => {
   padding: 2rem;
 }
 
-h1 {
-  margin-bottom: 2rem;
-  color: #2c3e50;
-}
-
 .content-list {
   display: flex;
   flex-direction: column;
@@ -72,13 +64,18 @@ h1 {
   border-color: #c0c0c0;
 }
 
-.content-item h2 {
-  margin: 0 0 0.5rem 0;
+.content-en {
+  margin-bottom: 1rem;
   color: #2c3e50;
+  font-size: 1.1rem;
+  line-height: 1.6;
 }
 
-.content-item p {
-  margin: 0;
+.content-es {
   color: #666;
+  font-size: 1rem;
+  line-height: 1.6;
+  border-top: 1px solid #e0e0e0;
+  padding-top: 1rem;
 }
 </style>
