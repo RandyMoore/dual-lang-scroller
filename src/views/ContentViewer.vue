@@ -2,6 +2,7 @@
   <div class="content-viewer">
     <div class="frame-container">
       <LanguageFrame :content="contentB" language="Spanish" ref="frame1" />
+      <Divider />
       <LanguageFrame :content="contentA" language="English" ref="frame2" />
     </div>
   </div>
@@ -11,6 +12,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import LanguageFrame from '../components/LanguageFrame.vue'
+import Divider from '../components/Divider.vue'
 
 const route = useRoute()
 const contentA = ref('')
