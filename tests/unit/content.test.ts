@@ -22,8 +22,8 @@ describe('createContentAPI', () => {
       expect(res.writeHead).toHaveBeenCalledWith(200, { 'Content-Type': 'application/json' })
       expect(res.end).toHaveBeenCalledWith(JSON.stringify([{
         id: 'content',
-        en: 'English Title',
-        es: 'Título en Español'
+        en: 'English Title\n\nThis is English test content used for unit tests.\n\nIt demonstrates how plain text content should be structured without any HTML or markdown formatting.',
+        es: 'Título en Español\n\nEste es contenido de prueba en español para las pruebas unitarias.\n\nDemuestra cómo el contenido de texto plano debe estructurarse sin formato HTML o markdown.'
       }]))
     })
 

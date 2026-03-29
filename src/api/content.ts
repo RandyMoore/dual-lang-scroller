@@ -43,19 +43,18 @@ export function createContentAPI(fixturePath?: string) {
           
           const content: ContentResponse = {
             id: enFileName,
-            en: enContent.split('\n')[0].trim(),
-            es: esContent.split('\n')[0].trim()
+            en: enContent.trim(),
+            es: esContent.trim()
           }
 
           res.writeHead(200, { 'Content-Type': 'application/json' })
           res.end(JSON.stringify([content]))
-        } catch (error) {
-          res.writeHead(500, { 'Content-Type': 'application/json' })
+        } catch (readError) {
+          res.writeHead(404, { 'Content-Type': 'application/json' })
           res.end(JSON.stringify({ error: 'Failed to read content files' }))
         }
-      } else {
-        next()
       }
+      next()
     }
   }
 }

@@ -23,10 +23,11 @@ onMounted(async () => {
   const contentId = route.params.id as string
   
   try {
-    const response = await fetch(`/api/content/${contentId}`)
+    const response = await fetch('/api/content')
     const data = await response.json()
-    contentA.value = data.contentA
-    contentB.value = data.contentB
+    const content = data[0]
+    contentA.value = content.en
+    contentB.value = content.es
     
     setupScrollSync()
   } catch (error) {
@@ -37,7 +38,7 @@ onMounted(async () => {
 // Update URL to use backend route
 const updateUrl = () => {
   const contentId = route.params.id as string
-  window.history.replaceState({}, '', `/content/${contentId}`)
+  window.history.replaceState({}, '', `/viewer/${contentId}`)
 }
 
 onUnmounted(() => {
