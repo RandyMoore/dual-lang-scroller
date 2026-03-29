@@ -25,7 +25,13 @@ onMounted(async () => {
   try {
     const response = await fetch('/api/content')
     const data = await response.json()
-    const content = data[0]
+    const content = data.find((item: any) => item.id === contentId)
+    
+    if (!content) {
+      console.error('Content not found:', contentId)
+      return
+    }
+    
     contentA.value = content.en
     contentB.value = content.es
     

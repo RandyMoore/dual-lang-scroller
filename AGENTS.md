@@ -9,6 +9,28 @@ npm run test  # Run unit tests
 npm run test:e2e  # Run end to end (e2e) tests
 ```
 
+## Content Files and Testing
+
+**IMPORTANT: Never use the project root 'content' directory for tests.**
+
+The project has two separate content directories:
+- `content/` - Project root directory for development and production content
+- `tests/fixtures/content/` - Test fixtures directory for automated tests
+
+**Test files MUST use the fixtures directory:**
+- Unit tests: `tests/unit/content.test.ts` uses `tests/fixtures/content/`
+- E2E tests: `tests/e2e/landing-page.spec.ts` uses `tests/fixtures/content/`
+
+**When writing tests:**
+1. Always reference content files from `tests/fixtures/content/`
+2. Do NOT reference content files from the project root `content/`
+3. If you need new test content, create it in `tests/fixtures/content/` (both `en/` and `es/` subdirectories)
+4. The content API automatically uses `tests/fixtures/content/` when configured correctly
+
+**Configuration:**
+- Vite dev server is configured to use `tests/fixtures/content/` (see `vite.config.ts`)
+- This prevents conflicts between development content and test fixtures
+
 ## Non-Interactive Shell Commands
 
 **ALWAYS use non-interactive flags** with file operations to avoid hanging on confirmation prompts.

@@ -17,18 +17,18 @@ test.describe('Landing Page', () => {
     const contentItems = page.locator('.content-item');
     await expect(contentItems).toHaveCount(2);
     
-    // Verify EN content for first item contains expected text (first line)
+    // Verify EN content for first item contains expected text (first line from content.txt)
     const firstItem = contentItems.first();
     await expect(firstItem.locator('.content-en')).toContainText('English Title');
     
-    // Verify ES content for first item contains expected text (first line)
-    await expect(firstItem.locator('.content-es')).toContainText('Titulo Español');
+    // Verify ES content for first item contains expected text (first line from content.txt)
+    await expect(firstItem.locator('.content-es')).toContainText('Título en Español');
     
-    // Verify EN content for second item contains expected text (first line)
+    // Verify EN content for second item contains expected text (first line from example.txt)
     const secondItem = contentItems.nth(1);
     await expect(secondItem.locator('.content-en')).toContainText('Understanding the Dual Language Scroller');
     
-    // Verify ES content for second item contains expected text (first line)
+    // Verify ES content for second item contains expected text (first line from example.txt)
     await expect(secondItem.locator('.content-es')).toContainText('Entendiendo el Desplazador Bilingüe');
   });
 
@@ -71,14 +71,60 @@ test.describe('Landing Page', () => {
     // Get the first content item
     const firstItem = page.locator('.content-item').first();
     
-    // Verify EN content contains only the first line (title)
+    // Verify EN content contains only the first line (title from content.txt)
     const enContent = await firstItem.locator('.content-en').textContent();
     expect(enContent).toContain('English Title');
     expect(enContent).not.toContain('It demonstrates how plain text content should be structured');
     
-    // Verify ES content contains only the first line (title)
+    // Verify ES content contains only the first line (title from content.txt)
     const esContent = await firstItem.locator('.content-es').textContent();
-    expect(esContent).toContain('Titulo Español');
+    expect(esContent).toContain('Título en Español');
     expect(esContent).not.toContain('Muestra cómo el contenido de texto plano debe estructurarse');
+  });
+
+  test('should display correct content when navigating to viewer with content ID', async ({ page }) => {
+    await page.goto('/viewer/content');
+    
+    // Verify the viewer page loaded
+    await expect(page).toHaveTitle(/Dual-Language Scroller/);
+    
+    // Verify both frames are visible
+    const frameContainer = page.locator('.frame-container');
+    await expect(frameContainer).toBeVisible();
+    
+    // Verify both frames have content
+    const frame1 = page.locator('.frame-content').first();
+    const frame2 = page.locator('.frame-content').nth(1);
+    await expect(frame1).toBeVisible();
+    await expect(frame2).toBeVisible();
+    
+    // Verify content is loaded and contains expected text for content.txt
+    const frame1Content = await frame1.textContent();
+    const frame2Content = await frame2.textContent();
+    expect(frame1Content).toContain('English Title');
+    expect(frame2Content).toContain('Título en Español');
+  });
+
+  test('should display correct content when navigating to viewer with example ID', async ({ page }) => {
+    await page.goto('/viewer/example');
+    
+    // Verify the viewer page loaded
+    await expect(page).toHaveTitle(/Dual-Language Scroller/);
+    
+    // Verify both frames are visible
+    const frameContainer = page.locator('.frame-container');
+    await expect(frameContainer).toBeVisible();
+    
+    // Verify both frames have content
+    const frame1 = page.locator('.frame-content').first();
+    const frame2 = page.locator('.frame-content').nth(1);
+    await expect(frame1).toBeVisible();
+    await expect(frame2).toBeVisible();
+    
+    // Verify content is loaded and contains expected text for example.txt
+    const frame1Content = await frame1.textContent();
+    const frame2Content = await frame2.textContent();
+    expect(frame1Content).toContain('Understanding the Dual Language Scroller');
+    expect(frame2Content).toContain('Entendiendo el Desplazador Bilingüe');
   });
 });
