@@ -31,7 +31,14 @@ const contentItems = ref<Array<{
 onMounted(async () => {
   try {
     const response = await fetch('/api/content')
-    contentItems.value = await response.json()
+    const fullContent = await response.json()
+    
+    // Extract only the first line (title) from each content item
+    contentItems.value = fullContent.map((item: any) => ({
+      id: item.id,
+      en: item.en.split('\n')[0], // Get first line only
+      es: item.es.split('\n')[0]  // Get first line only
+    }))
   } catch (error) {
     console.error('Failed to load content:', error)
   }

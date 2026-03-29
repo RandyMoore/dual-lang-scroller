@@ -47,12 +47,38 @@ If asked for a plan in ACT mode don't change anything. You are in ACT mode to ru
 
 <!-- OPENSPEC:START -->
 ## Exploration, Planning, Proposals and Task Management
-Always open `@/.cline/skills/openspec-explore/SKILL.md` when the request is exploratory in nature
 
-Always open `@/.cline/skills/openspec-propose/SKILL.md` when the request:
-- Mentions planning or proposals (words like proposal, spec, change, plan)
-- Introduces new capabilities, breaking changes, architecture shifts, or big performance/security work
-- Sounds ambiguous and you need the authoritative spec before coding
+**For creating new OpenSpec changes:**
+- ALWAYS use `@/.cline/skills/openspec-propose/SKILL.md` when the user wants to create a new change, fix a bug, or implement a feature
+- This skill will generate a complete change with proposal, design, and tasks in one step
+- Do NOT manually create change files using write_to_file or replace_in_file
+- Include the additional fields in `@/openspec/template-proposal.md` to relate the new change to existing changes (establish where in ordering, the priority, etc compared to the other non-archived changes)
+
+**For exploring ideas:**
+- Always open `@/.cline/skills/openspec-explore/SKILL.md` when the request is exploratory in nature
+
+**For implementing changes:**
+- Use `@/.cline/skills/openspec-apply-change/SKILL.md` to learn how to implement a change - when the user asks to implement or do
+
+
+Use `@/.cline/skills/openspec-archive-change/SKILL.md` after an open spec change has been completed (implemented, or done)
+Use `@/.cline/skills/openspec-archive-change/SKILL.md` whenever the request included the word "archive" or "archived"
+
+**Do the next change:**
+- Load the skill `@/.cline/skills/openspec-apply-change/SKILL.md`
+- Find the next change that is not in archive under `@/openspec/changes` respecting the dependencies and priorities
+- Implement the change using the apply change skill
+- Archive the change using the skill `@/.cline/skills/openspec-archive-change/SKILL.md`
+
+**When user explicitly mentions a change name:**
+- If the user says "Do the [change-name] change" or similar, automatically archive the change after implementation
+- Use the openspec-archive-change skill to archive the completed change
+- This applies when the user provides a specific change name in their request
+
+Keep this managed block so 'openspec update' can refresh the instructions.  
+
+## Self Learning
+If you had tool use errors or had to try something several times in the completion summary propose to the user what to add to this AGENTS.md file to help you avoid the errors or retries in the future.
 
 Use `@/.cline/skills/openspec-apply-change/SKILL.md` to learn:
 - How to create and apply change proposals

@@ -59,4 +59,21 @@ test.describe('Landing Page', () => {
     await item.click();
     await expect(page).toHaveURL(/\/viewer\/content/);
   });
+
+  test('should display only first line of content on landing page', async ({ page }) => {
+    await page.goto('/');
+    
+    // Get the first content item
+    const firstItem = page.locator('.content-item').first();
+    
+    // Verify EN content contains only the first line (title)
+    const enContent = await firstItem.locator('.content-en').textContent();
+    expect(enContent).toContain('English Title');
+    expect(enContent).not.toContain('It demonstrates how plain text content should be structured');
+    
+    // Verify ES content contains only the first line (title)
+    const esContent = await firstItem.locator('.content-es').textContent();
+    expect(esContent).toContain('Titulo Español');
+    expect(esContent).not.toContain('Muestra cómo el contenido de texto plano debe estructurarse');
+  });
 });
