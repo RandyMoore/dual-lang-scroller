@@ -101,8 +101,8 @@ test.describe('Landing Page', () => {
     // Verify content is loaded and contains expected text for content.txt
     const frame1Content = await frame1.textContent();
     const frame2Content = await frame2.textContent();
-    expect(frame1Content).toContain('English Title');
-    expect(frame2Content).toContain('Título en Español');
+    expect(frame1Content).toContain('Título en Español');
+    expect(frame2Content).toContain('English Title');
   });
 
   test('should display correct content when navigating to viewer with example ID', async ({ page }) => {
@@ -124,7 +124,7 @@ test.describe('Landing Page', () => {
     // Verify content is loaded and contains expected text for example.txt
     const frame1Content = await frame1.textContent();
     const frame2Content = await frame2.textContent();
-    expect(frame1Content).toContain('Understanding the Dual Language Scroller');
-    expect(frame2Content).toContain('Entendiendo el Desplazador Bilingüe');
+    expect(frame1Content).toContain('Entendiendo el Desplazador Bilingüe');
+    expect(frame2Content).toContain('Understanding the Dual Language Scroller');
   });
 });

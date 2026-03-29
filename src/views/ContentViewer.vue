@@ -1,8 +1,8 @@
 <template>
   <div class="content-viewer">
     <div class="frame-container">
-      <LanguageFrame :content="contentA" language="English" ref="frame1" />
-      <LanguageFrame :content="contentB" language="Spanish" ref="frame2" />
+      <LanguageFrame :content="contentB" language="Spanish" ref="frame1" />
+      <LanguageFrame :content="contentA" language="English" ref="frame2" />
     </div>
   </div>
 </template>

@@ -1,11 +1,5 @@
-# Landing Page Capability
+## MODIFIED Requirements
 
-This capability defines the landing page functionality that displays available content items for selection.
-
-## Purpose
-
-The landing page provides a clean, minimal interface for users to browse and select from all available bilingual content items before viewing them in the content viewer.
-## Requirements
 ### Requirement: Content List Display
 The system SHALL display a list of all available content items on the landing page.
 
@@ -36,11 +30,3 @@ The system SHALL display only the first line (title) of content on the landing p
 - **WHEN** user first navigates to the application
 - **THEN** the landing page displays only the first line of content for each language
 - **AND** the content viewer displays the full content when navigating to `/viewer/<id>`
-
-### Requirement: Language Order Display
-The system SHALL display Spanish content first and English content second on the landing page.
-
-#### Scenario: Landing shows Spanish first, English second
-- **WHEN** user first navigates to the application
-- **THEN** the landing page displays Spanish content before English content
-

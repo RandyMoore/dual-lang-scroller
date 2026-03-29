@@ -10,8 +10,8 @@
         tabindex="0"
         @keydown.enter="navigateToViewer(item.id)"
       >
-        <div class="content-en">{{ item.en }}</div>
         <div class="content-es">{{ item.es }}</div>
+        <div class="content-en">{{ item.en }}</div>
       </div>
     </div>
   </div>
