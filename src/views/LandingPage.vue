@@ -9,6 +9,8 @@
         role="button"
         tabindex="0"
         @keydown.enter="navigateToViewer(item.id)"
+        target="_blank"
+        rel="noopener noreferrer"
       >
         <div class="content-es">{{ item.es }}</div>
         <div class="content-en">{{ item.en }}</div>
@@ -45,7 +47,8 @@ onMounted(async () => {
 })
 
 const navigateToViewer = (id: string) => {
-  router.push(`/viewer/${id}`)
+  const url = `/viewer/${id}`
+  window.open(url, '_blank', 'noopener,noreferrer')
 }
 </script>
 
