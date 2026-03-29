@@ -1,5 +1,5 @@
 import { readFileSync, existsSync } from 'fs'
-import { resolve, dirname } from 'path'
+import { resolve, dirname, basename, extname } from 'path'
 import { fileURLToPath } from 'url'
 
 interface ContentResponse {
@@ -11,25 +11,38 @@ interface ContentResponse {
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-export function createContentAPI() {
-  const contentPath = resolve(__dirname, '../../content')
-  const enPath = resolve(contentPath, 'en', 'content.txt')
-  const esPath = resolve(contentPath, 'es', 'content.txt')
-  
-  // Debug: log the paths
-  console.log('Content API paths:', { contentPath, enPath, esPath })
-  console.log('Files exist:', { en: existsSync(enPath), es: existsSync(esPath) })
-  console.log('Content files:', { en: readFileSync(enPath, 'utf-8'), es: readFileSync(esPath, 'utf-8') })
-  
+function getPaths(fixturePath?: string) {
+  const contentPath = fixturePath || resolve(__dirname, '../../content')
+  return {
+    en: resolve(contentPath, 'en', 'content.txt'),
+    es: resolve(contentPath, 'es', 'content.txt')
+  }
+}
+
+export function createContentAPI(fixturePath?: string) {
   return {
     handler: (req: any, res: any, next: () => void) => {
       if (req.url === '/api/content' && req.method === 'GET') {
         try {
-          const enContent = readFileSync(enPath, 'utf-8')
-          const esContent = readFileSync(esPath, 'utf-8')
+          const paths = getPaths(fixturePath)
+          const enFileName = basename(paths.en, extname(paths.en))
+          const esFileName = basename(paths.es, extname(paths.es))
+          
+          // Check if both files exist and have matching names
+          const filesExist = existsSync(paths.en) && existsSync(paths.es)
+          const namesMatch = enFileName === esFileName
+          
+          if (!filesExist || !namesMatch) {
+            res.writeHead(404, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify({ error: 'Content files not found or names do not match' }))
+            return
+          }
+          
+          const enContent = readFileSync(paths.en, 'utf-8')
+          const esContent = readFileSync(paths.es, 'utf-8')
           
           const content: ContentResponse = {
-            id: 'content',
+            id: enFileName,
             en: enContent.split('\n')[0].trim(),
             es: esContent.split('\n')[0].trim()
           }

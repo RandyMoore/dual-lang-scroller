@@ -26,4 +26,37 @@ test.describe('Landing Page', () => {
     // Verify ES content contains expected text (first line)
     await expect(firstItem.locator('.content-es')).toContainText('Titulo Español');
   });
+
+  test('should navigate to viewer when clicking on content item', async ({ page }) => {
+    await page.goto('/');
+    
+    // Click on the first content item
+    const contentItem = page.locator('.content-item').first();
+    await contentItem.click();
+    
+    // Verify navigation to /viewer/content (string ID)
+    await expect(page).toHaveURL(/\/viewer\/content/);
+  });
+
+  test('should navigate to correct viewer with correct ID when clicking on specific item', async ({ page }) => {
+    await page.goto('/');
+    
+    // Get the first content item's EN text to use as identifier
+    const firstItem = page.locator('.content-item').first();
+    const enText = await firstItem.locator('.content-en').textContent();
+    
+    // Click on the content item
+    await firstItem.click();
+    
+    // Verify we're now on the viewer page with correct ID
+    await expect(page).toHaveURL(/\/viewer\/content/);
+    
+    // Navigate back to landing and verify navigation works for specific items
+    await page.goto('/');
+    
+    // Click again and verify the URL contains the expected ID pattern
+    const item = page.locator('.content-item').first();
+    await item.click();
+    await expect(page).toHaveURL(/\/viewer\/content/);
+  });
 });

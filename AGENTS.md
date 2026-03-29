@@ -2,14 +2,11 @@
 
 This project uses **bd** (beads) for issue tracking. Run `bd onboard` to get started.
 
-## Quick Reference
+## Project Commands
 
 ```bash
-bd ready              # Find available work
-bd show <id>          # View issue details
-bd update <id> --claim  # Claim work atomically
-bd close <id>         # Complete work
-bd dolt push          # Push beads data to remote
+npm run test  # Run unit tests
+npm run test:e2e  # Run end to end (e2e) tests
 ```
 
 ## Non-Interactive Shell Commands
@@ -36,35 +33,15 @@ cp -rf source dest          # NOT: cp -r source dest
 - `apt-get` - use `-y` flag
 - `brew` - use `HOMEBREW_NO_AUTO_UPDATE=1` env var
 
+## Project Task Management
 <!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:ca08a54f -->
-## Beads Issue Tracker
-
-This project uses **bd (beads)** for issue tracking. Run `bd prime` to see full workflow context and commands.
-
-### Quick Reference
-
-```bash
-bd ready              # Find available work
-bd show <id>          # View issue details
-bd update <id> --claim  # Claim work
-bd close <id>         # Complete work
-```
-
-### Rules
-
-- Use `bd` for ALL task tracking — do NOT use TodoWrite, TaskCreate, or markdown TODO lists
-- Run `bd prime` for detailed command reference and session close protocol
-- Use `bd remember` for persistent knowledge — do NOT use MEMORY.md files
-
-## Session Completion
-
-**When ending a work session**, you MUST complete ALL steps below. Work is NOT complete until `git push` succeeds.
-
-**MANDATORY WORKFLOW:**
-
-1. **File issues for remaining work** - Create issues for anything that needs follow-up
-2. **Run quality gates** (if code changed) - Tests, linters, builds
-3. **Update issue status** - Close finished work, update in-progress items
-4. **Hand off** - Provide context for next session by updating the relevant open beads
-
+- Run `bd prime` for detailed command reference to discover beads features - an issue tracking / task memory management system
+- Use `bd remember` for persistent knowledge — do NOT use .md files
 <!-- END BEADS INTEGRATION -->
+
+## Testing
+NEVER increase test timeout settings. The solution is never give more time.
+NEVER decide to fix the code or the test on your own if the tests are failing. Summarize the mismatch and then ask if the code or the test is wrong before changing anything.
+
+## Interaction
+If asked for a plan in ACT mode don't change anything. You are in ACT mode to run commands. Propose a plan before changing any project files.

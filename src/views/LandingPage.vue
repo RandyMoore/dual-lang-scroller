@@ -5,6 +5,10 @@
         v-for="item in contentItems"
         :key="item.id"
         class="content-item"
+        @click="navigateToViewer(item.id)"
+        role="button"
+        tabindex="0"
+        @keydown.enter="navigateToViewer(item.id)"
       >
         <div class="content-en">{{ item.en }}</div>
         <div class="content-es">{{ item.es }}</div>

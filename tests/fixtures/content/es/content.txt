@@ -1,0 +1,5 @@
+Título en Español
+
+Este es contenido de prueba en español para las pruebas unitarias.
+
+Demuestra cómo el contenido de texto plano debe estructurarse sin formato HTML o markdown.
