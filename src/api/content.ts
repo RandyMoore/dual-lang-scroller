@@ -1,4 +1,4 @@
-import { readFileSync, existsSync } from 'fs'
+import { readFileSync, existsSync, readdirSync } from 'fs'
 import { resolve, dirname, basename, extname } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -14,8 +14,8 @@ const __dirname = dirname(__filename)
 function getPaths(fixturePath?: string) {
   const contentPath = fixturePath || resolve(__dirname, '../../content')
   return {
-    en: resolve(contentPath, 'en', 'content.txt'),
-    es: resolve(contentPath, 'es', 'content.txt')
+    en: resolve(contentPath, 'en'),
+    es: resolve(contentPath, 'es')
   }
 }
 
@@ -25,30 +25,41 @@ export function createContentAPI(fixturePath?: string) {
       if (req.url === '/api/content' && req.method === 'GET') {
         try {
           const paths = getPaths(fixturePath)
-          const enFileName = basename(paths.en, extname(paths.en))
-          const esFileName = basename(paths.es, extname(paths.es))
           
-          // Check if both files exist and have matching names
-          const filesExist = existsSync(paths.en) && existsSync(paths.es)
-          const namesMatch = enFileName === esFileName
+          // Read all .txt files from both directories
+          const enFiles = readdirSync(paths.en).filter(file => file.endsWith('.txt'))
+          const esFiles = readdirSync(paths.es).filter(file => file.endsWith('.txt'))
           
-          if (!filesExist || !namesMatch) {
-            res.writeHead(404, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify({ error: 'Content files not found or names do not match' }))
-            return
+          // Create a map of es files for quick lookup
+          const esFileMap = new Map(
+            esFiles.map(file => [basename(file, extname(file)), file])
+          )
+          
+          // Build content items array
+          const contentItems: ContentResponse[] = []
+          
+          for (const enFile of enFiles) {
+            const enFileName = basename(enFile, extname(enFile))
+            
+            // Check if there's a matching Spanish file
+            if (esFileMap.has(enFileName)) {
+              const esFile = esFileMap.get(enFileName)!
+              
+              // Read both files
+              const enContent = readFileSync(resolve(paths.en, enFile), 'utf-8')
+              const esContent = readFileSync(resolve(paths.es, esFile), 'utf-8')
+              
+              contentItems.push({
+                id: enFileName,
+                en: enContent.trim(),
+                es: esContent.trim()
+              })
+            }
           }
           
-          const enContent = readFileSync(paths.en, 'utf-8')
-          const esContent = readFileSync(paths.es, 'utf-8')
-          
-          const content: ContentResponse = {
-            id: enFileName,
-            en: enContent.trim(),
-            es: esContent.trim()
-          }
-
+          // Return array of content items
           res.writeHead(200, { 'Content-Type': 'application/json' })
-          res.end(JSON.stringify([content]))
+          res.end(JSON.stringify(contentItems))
         } catch (readError) {
           res.writeHead(404, { 'Content-Type': 'application/json' })
           res.end(JSON.stringify({ error: 'Failed to read content files' }))

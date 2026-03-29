@@ -13,18 +13,23 @@ test.describe('Landing Page', () => {
     const contentList = page.locator('.content-list');
     await expect(contentList).toBeVisible();
     
-    // Verify content count is correct (1 item with id 'content')
+    // Verify content count is correct (2 items: 'content' and 'example')
     const contentItems = page.locator('.content-item');
-    await expect(contentItems).toHaveCount(1);
+    await expect(contentItems).toHaveCount(2);
     
-    // Verify EN and ES content are displayed in each item
+    // Verify EN content for first item contains expected text (first line)
     const firstItem = contentItems.first();
-    
-    // Verify EN content contains expected text (first line)
     await expect(firstItem.locator('.content-en')).toContainText('English Title');
     
-    // Verify ES content contains expected text (first line)
+    // Verify ES content for first item contains expected text (first line)
     await expect(firstItem.locator('.content-es')).toContainText('Titulo Español');
+    
+    // Verify EN content for second item contains expected text (first line)
+    const secondItem = contentItems.nth(1);
+    await expect(secondItem.locator('.content-en')).toContainText('Understanding the Dual Language Scroller');
+    
+    // Verify ES content for second item contains expected text (first line)
+    await expect(secondItem.locator('.content-es')).toContainText('Entendiendo el Desplazador Bilingüe');
   });
 
   test('should navigate to viewer when clicking on content item', async ({ page }) => {
