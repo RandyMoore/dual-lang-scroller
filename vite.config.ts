@@ -10,8 +10,21 @@ export default defineConfig({
     {
       name: 'content-api',
       configureServer(server) {
-        // Use fixtures directory for development to avoid conflicts with project root 'content' directory
-        const { handler } = createContentAPI(resolve(__dirname, 'tests/fixtures/content'))
+        // Use fixtures directory for development, content directory for preview
+        const contentPath = process.env.NODE_ENV === 'development'
+          ? resolve(__dirname, 'tests/fixtures/content')
+          : resolve(__dirname, 'content')
+        
+        const { handler } = createContentAPI(contentPath)
+        server.middlewares.use(handler)
+      }
+    },
+    {
+      name: 'content-api-preview',
+      configurePreviewServer(server) {
+        // Use content directory for preview
+        const contentPath = resolve(__dirname, 'content')
+        const { handler } = createContentAPI(contentPath)
         server.middlewares.use(handler)
       }
     }
