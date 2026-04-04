@@ -1,7 +1,0 @@
-English Title
-
-It demonstrates how plain text content should be structured without any HTML or markdown formatting.
-
-The text should be readable and properly formatted with paragraphs separated by newlines.
-
-This content will be displayed in the top frame of the content viewer.
