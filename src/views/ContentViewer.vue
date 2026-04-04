@@ -19,7 +19,8 @@ const contentA = ref('')
 const contentB = ref('')
 const frame1 = ref<InstanceType<typeof LanguageFrame> | null>(null)
 const frame2 = ref<InstanceType<typeof LanguageFrame> | null>(null)
-let scrollTimeout: number | null = null
+let scrollOffset = 0
+let isSyncing = false
 
 onMounted(async () => {
   const contentId = route.params.id as string
@@ -49,37 +50,28 @@ const updateUrl = () => {
   window.history.replaceState({}, '', `/viewer/${contentId}`)
 }
 
-onUnmounted(() => {
-  if (scrollTimeout) {
-    clearTimeout(scrollTimeout)
-  }
-})
-
 const setupScrollSync = () => {
   if (!frame1.value || !frame2.value) return
 
-  const syncScroll = (sourceFrame: InstanceType<typeof LanguageFrame>, targetFrame: InstanceType<typeof LanguageFrame>) => {
-    if (scrollTimeout) {
-      clearTimeout(scrollTimeout)
-    }
+  const el1 = frame1.value.$el  // top frame (Spanish)
+  const el2 = frame2.value.$el  // bottom frame (English)
 
-    scrollTimeout = window.setTimeout(() => {
-      const sourceElement = sourceFrame.$el
-      const targetElement = targetFrame.$el
-      if (sourceElement && targetElement) {
-        targetElement.scrollTop = sourceElement.scrollTop
-        targetElement.scrollLeft = sourceElement.scrollLeft
-      }
-    }, 0)
-  }
+  if (!el1 || !el2) return
 
-  const sourceElement1 = frame1.value.$el
-  const sourceElement2 = frame2.value.$el
-  
-  if (sourceElement1 && sourceElement2) {
-    sourceElement1.addEventListener('scroll', () => syncScroll(frame1.value!, frame2.value!))
-    sourceElement2.addEventListener('scroll', () => syncScroll(frame2.value!, frame1.value!))
-  }
+  // When bottom frame is manually scrolled, record the new offset relative to top frame
+  el2.addEventListener('scroll', () => {
+    if (isSyncing) return
+    scrollOffset = el2.scrollTop - el1.scrollTop
+  })
+
+  // When top frame scrolls, sync bottom frame while preserving the established offset
+  el1.addEventListener('scroll', () => {
+    isSyncing = true
+    el2.scrollTop = el1.scrollTop + scrollOffset
+    requestAnimationFrame(() => {
+      isSyncing = false
+    })
+  })
 }
 </script>
 
