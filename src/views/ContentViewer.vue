@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import LanguageFrame from '../components/LanguageFrame.vue'
 import Divider from '../components/Divider.vue'
@@ -21,6 +21,7 @@ const frame1 = ref<InstanceType<typeof LanguageFrame> | null>(null)
 const frame2 = ref<InstanceType<typeof LanguageFrame> | null>(null)
 let scrollOffset = 0
 let isSyncing = false
+let saveTimer: ReturnType<typeof setTimeout>
 
 onMounted(async () => {
   const contentId = route.params.id as string
@@ -64,20 +65,46 @@ const setupScrollSync = () => {
 
   if (!el1 || !el2) return
 
+  const contentId = route.params.id as string
+  const storageKey = `progress_${contentId}`
+
+  const saveProgress = () => {
+    clearTimeout(saveTimer)
+    saveTimer = setTimeout(() => {
+      const maxScroll = el1.scrollHeight - el1.clientHeight
+      const progress = maxScroll > 0 ? el1.scrollTop / maxScroll : 0
+      localStorage.setItem(storageKey, JSON.stringify({
+        top: el1.scrollTop,
+        bottom: el2.scrollTop,
+        progress
+      }))
+    }, 200)
+  }
+
   // When bottom frame is manually scrolled, record the new offset relative to top frame
   el2.addEventListener('scroll', () => {
-    if (isSyncing) return
-    scrollOffset = el2.scrollTop - el1.scrollTop
+    if (!isSyncing) scrollOffset = el2.scrollTop - el1.scrollTop
+    saveProgress()
   })
 
   // When top frame scrolls, sync bottom frame while preserving the established offset
   el1.addEventListener('scroll', () => {
     isSyncing = true
     el2.scrollTop = el1.scrollTop + scrollOffset
-    requestAnimationFrame(() => {
-      isSyncing = false
-    })
+    requestAnimationFrame(() => { isSyncing = false })
+    saveProgress()
   })
+
+  // Restore saved position after content has rendered
+  const saved = localStorage.getItem(storageKey)
+  if (saved) {
+    const { top, bottom } = JSON.parse(saved)
+    nextTick(() => {
+      el1.scrollTop = top
+      el2.scrollTop = bottom
+      scrollOffset = bottom - top
+    })
+  }
 }
 </script>
 

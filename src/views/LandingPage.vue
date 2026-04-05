@@ -11,6 +11,7 @@
         @keydown.enter="navigateToViewer(item.id)"
         target="_blank"
         rel="noopener noreferrer"
+        :style="{ '--progress': `${((itemProgress[item.id] ?? 0) * 100).toFixed(1)}%` }"
       >
         <div class="content-es">{{ item.es }}</div>
         <div class="content-en">{{ item.en }}</div>
@@ -29,6 +30,7 @@ const contentItems = ref<Array<{
   en: string
   es: string
 }>>([])
+const itemProgress = ref<Record<string, number>>({})
 
 onMounted(async () => {
   let fullContent: any[] = []
@@ -47,6 +49,14 @@ onMounted(async () => {
     en: item.en.split('\n')[0],
     es: item.es.split('\n')[0]
   }))
+
+  fullContent.forEach((item: any) => {
+    const saved = localStorage.getItem(`progress_${item.id}`)
+    if (saved) {
+      const { progress } = JSON.parse(saved)
+      if (typeof progress === 'number') itemProgress.value[item.id] = progress
+    }
+  })
 })
 
 const navigateToViewer = (id: string) => {
@@ -74,10 +84,11 @@ const navigateToViewer = (id: string) => {
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
+  background: linear-gradient(to right, #e8e8e8 var(--progress, 0%), transparent var(--progress, 0%));
 }
 
 .content-item:hover {
-  background-color: #f5f5f5;
+  background: linear-gradient(to right, #e8e8e8 var(--progress, 0%), #f5f5f5 var(--progress, 0%));
   border-color: #c0c0c0;
 }
 
