@@ -58,7 +58,7 @@ export function createContentAPI(fixturePath?: string) {
           }
           
            // Return array of content items
-           res.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'max-age=0, stale-while-revalidate=604800, stale-if-error=604800' })
+           res.writeHead(200, { 'Content-Type': 'application/json' })
            res.end(JSON.stringify(contentItems))
            return
          } catch (readError) {

@@ -38,10 +38,8 @@ onMounted(async () => {
   try {
     const response = await fetch(import.meta.env.PROD ? `${import.meta.env.BASE_URL}content.json` : '/api/content')
     fullContent = await response.json()
-    localStorage.setItem('offlineContent', JSON.stringify(fullContent))
   } catch {
-    const cached = localStorage.getItem('offlineContent')
-    if (cached) fullContent = JSON.parse(cached)
+    console.error('Failed to load content')
   }
 
   contentItems.value = fullContent.map((item: any) => ({

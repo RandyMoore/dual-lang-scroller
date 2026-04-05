@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import LanguageFrame from '../components/LanguageFrame.vue'
 import Divider from '../components/Divider.vue'
@@ -27,15 +27,8 @@ onMounted(async () => {
   const contentId = route.params.id as string
   
   try {
-    let data: any[]
-    try {
-      const response = await fetch(import.meta.env.PROD ? `${import.meta.env.BASE_URL}content.json` : '/api/content')
-      data = await response.json()
-    } catch {
-      const cached = localStorage.getItem('offlineContent')
-      if (!cached) { console.error('No cached content available'); return }
-      data = JSON.parse(cached)
-    }
+    const response = await fetch(import.meta.env.PROD ? `${import.meta.env.BASE_URL}content.json` : '/api/content')
+    const data = await response.json()
 
     const content = data.find((item: any) => item.id === contentId)
     if (!content) { console.error('Content not found:', contentId); return }
@@ -49,13 +42,6 @@ onMounted(async () => {
   }
 })
 
-// Update URL to use backend route
-const updateUrl = () => {
-  const contentId = route.params.id as string
-  window.history.replaceState({}, '', `/viewer/${contentId}`)
-}
-
-onUnmounted(() => { document.title = 'Dual-Language Scroller' })
 
 const setupScrollSync = () => {
   if (!frame1.value || !frame2.value) return
