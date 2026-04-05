@@ -13,6 +13,8 @@ dist-ssr
 # Misc
 .DS_Store
 *.local
+content/*
+public/content.json
 
 # Node.js
 node_modules/
@@ -53,3 +55,4 @@ Thumbs.db
 .dolt/
 *.db
 .beads-credential-key
+

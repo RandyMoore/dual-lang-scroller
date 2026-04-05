@@ -26,18 +26,21 @@ onMounted(async () => {
   const contentId = route.params.id as string
   
   try {
-    const response = await fetch('/api/content')
-    const data = await response.json()
-    const content = data.find((item: any) => item.id === contentId)
-    
-    if (!content) {
-      console.error('Content not found:', contentId)
-      return
+    let data: any[]
+    try {
+      const response = await fetch(import.meta.env.PROD ? '/content.json' : '/api/content')
+      data = await response.json()
+    } catch {
+      const cached = localStorage.getItem('offlineContent')
+      if (!cached) { console.error('No cached content available'); return }
+      data = JSON.parse(cached)
     }
-    
+
+    const content = data.find((item: any) => item.id === contentId)
+    if (!content) { console.error('Content not found:', contentId); return }
+
     contentA.value = content.en
     contentB.value = content.es
-    
     setupScrollSync()
   } catch (error) {
     console.error('Failed to load content:', error)

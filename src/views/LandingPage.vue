@@ -1,6 +1,6 @@
 <template>
   <div class="landing-page">
-    <div class="content-list">
+<div class="content-list">
       <div
         v-for="item in contentItems"
         :key="item.id"
@@ -31,23 +31,26 @@ const contentItems = ref<Array<{
 }>>([])
 
 onMounted(async () => {
+  let fullContent: any[] = []
+
   try {
-    const response = await fetch('/api/content')
-    const fullContent = await response.json()
-    
-    // Extract only the first line (title) from each content item
-    contentItems.value = fullContent.map((item: any) => ({
-      id: item.id,
-      en: item.en.split('\n')[0], // Get first line only
-      es: item.es.split('\n')[0]  // Get first line only
-    }))
-  } catch (error) {
-    console.error('Failed to load content:', error)
+    const response = await fetch(import.meta.env.PROD ? '/content.json' : '/api/content')
+    fullContent = await response.json()
+    localStorage.setItem('offlineContent', JSON.stringify(fullContent))
+  } catch {
+    const cached = localStorage.getItem('offlineContent')
+    if (cached) fullContent = JSON.parse(cached)
   }
+
+  contentItems.value = fullContent.map((item: any) => ({
+    id: item.id,
+    en: item.en.split('\n')[0],
+    es: item.es.split('\n')[0]
+  }))
 })
 
 const navigateToViewer = (id: string) => {
-  const url = `/viewer/${id}`
+  const url = router.resolve({ name: 'ContentViewer', params: { id } }).href
   window.open(url, '_blank', 'noopener,noreferrer')
 }
 </script>
