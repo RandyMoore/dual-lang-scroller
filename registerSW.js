@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/dual-lang-scroller/sw.js', { scope: '/dual-lang-scroller/' })})}
