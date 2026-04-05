@@ -28,7 +28,7 @@ onMounted(async () => {
   try {
     let data: any[]
     try {
-      const response = await fetch(import.meta.env.PROD ? '/content.json' : '/api/content')
+      const response = await fetch(import.meta.env.PROD ? `${import.meta.env.BASE_URL}content.json` : '/api/content')
       data = await response.json()
     } catch {
       const cached = localStorage.getItem('offlineContent')

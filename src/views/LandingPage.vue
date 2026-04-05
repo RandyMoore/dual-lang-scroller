@@ -34,7 +34,7 @@ onMounted(async () => {
   let fullContent: any[] = []
 
   try {
-    const response = await fetch(import.meta.env.PROD ? '/content.json' : '/api/content')
+    const response = await fetch(import.meta.env.PROD ? `${import.meta.env.BASE_URL}content.json` : '/api/content')
     fullContent = await response.json()
     localStorage.setItem('offlineContent', JSON.stringify(fullContent))
   } catch {
