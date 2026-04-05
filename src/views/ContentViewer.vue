@@ -41,6 +41,7 @@ onMounted(async () => {
 
     contentA.value = content.en
     contentB.value = content.es
+    document.title = content.es.split('\n')[0]
     setupScrollSync()
   } catch (error) {
     console.error('Failed to load content:', error)
@@ -52,6 +53,8 @@ const updateUrl = () => {
   const contentId = route.params.id as string
   window.history.replaceState({}, '', `/viewer/${contentId}`)
 }
+
+onUnmounted(() => { document.title = 'Dual-Language Scroller' })
 
 const setupScrollSync = () => {
   if (!frame1.value || !frame2.value) return
